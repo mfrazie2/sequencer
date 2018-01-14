@@ -1,18 +1,24 @@
 (function main() {
   let intervalTimer,
-      stepNumber = 1;
+      stepNumber = 1,
+      isNewSequence = true;
 
   
-  document.getElementById('start').addEventListener('click', function() { startInterval(100); });
+  document.getElementById('start').addEventListener('click', function() { 
+    isNewSequence ? startInterval(100) : null; 
+  });
   document.getElementById('stop').addEventListener('click', stopInterval);
 
   function startInterval(bpm) {
     let interval = convertBPMToMS(bpm);
     intervalTimer = setInterval(startSequencer, interval);
   }
-
+  
   function stopInterval() {
     clearInterval(intervalTimer);
+    toggleActiveStep(getElementByStepNumber(stepNumber - 1));
+    stepNumber = 1;
+    isNewSequence = true;
   }
 
   function convertBPMToMS(bpm) {
@@ -28,13 +34,18 @@
       prevStepNumber = stepNumber - 1;
     }
 
-    let currentEl = document.getElementsByClassName(`button${stepNumber}`)[0];
-    let previousEl = document.getElementsByClassName(`button${prevStepNumber}`)[0];
+    let currentEl = getElementByStepNumber(stepNumber);
+    let previousEl = getElementByStepNumber(prevStepNumber);
     
     toggleActiveStep(currentEl);
-    toggleActiveStep(previousEl);
+    if (!isNewSequence) toggleActiveStep(previousEl);
 
     stepNumber++;
+    isNewSequence = false;
+  }
+
+  function getElementByStepNumber(stepNumber) {
+    return document.getElementsByClassName(`button${stepNumber}`)[0];
   }
 
   function toggleActiveStep(element) {
