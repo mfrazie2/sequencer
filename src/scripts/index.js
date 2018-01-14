@@ -1,24 +1,27 @@
 (function main() {
   let intervalTimer,
       stepNumber = 1,
-      isNewSequence = true;
+      isNewSequence = true,
+      isRunning = false;
 
   
   document.getElementById('start').addEventListener('click', function() { 
-    isNewSequence ? startInterval(100) : null; 
+    !isRunning ? startInterval(100) : null; 
   });
   document.getElementById('stop').addEventListener('click', stopInterval);
 
   function startInterval(bpm) {
     let interval = convertBPMToMS(bpm);
+    isRunning = true;
     intervalTimer = setInterval(startSequencer, interval);
   }
   
   function stopInterval() {
     clearInterval(intervalTimer);
-    toggleActiveStep(getElementByStepNumber(stepNumber - 1));
+    if (isRunning) toggleActiveStep(getElementByStepNumber(stepNumber - 1));
     stepNumber = 1;
     isNewSequence = true;
+    isRunning = false;
   }
 
   function convertBPMToMS(bpm) {
