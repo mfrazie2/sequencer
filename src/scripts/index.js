@@ -39,8 +39,8 @@
     let currentEl = getElementByStepNumber(stepNumber);
     let previousEl = getElementByStepNumber(prevStepNumber);
 
-    toggleActiveStep(currentEl);
-    if (!isNewSequence) toggleActiveStep(previousEl);
+    toggleClass(currentEl, 'activeStep');
+    if (!isNewSequence) toggleClass(previousEl, 'activeStep');
 
     playStepSounds(stepNumber);
 
@@ -57,7 +57,7 @@
 
   function stopInterval() {
     clearInterval(intervalTimer);
-    if (isRunning) toggleActiveStep(getElementByStepNumber(stepNumber - 1));
+    if (isRunning) toggleClass(getElementByStepNumber(stepNumber - 1), 'activeStep');
     stepNumber = 1;
     isNewSequence = true;
     isRunning = false;
@@ -93,8 +93,8 @@
       return document.getElementsByClassName(`button${stepNumber}`)[0];
     }
 
-    function toggleActiveStep(element) {
-      element.classList.toggle('activeStep');
+    function toggleClass(element, className) {
+      element.classList.toggle(className);
     }
 
     function playStepSounds(stepNumber) {
@@ -104,8 +104,11 @@
 
     function playSound(buttonNumber) {
       let audio = document.querySelector(`audio[data-button="${buttonNumber}"]`);
+      let activeButton = getElementByStepNumber(buttonNumber);
       audio.currentTime = 0;
+      toggleClass(activeButton, 'activeSound');
       audio.play();
+      toggleClass(activeButton, 'activeSound');
     }
 
     function addEventListener(id, listener) {

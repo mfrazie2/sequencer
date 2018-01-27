@@ -1,0 +1,24 @@
+.sequencer {
+  display: grid;
+  grid-gap: 20px;
+  background: black;
+  grid-template-areas:
+    "li li li li"
+    "li li li li"
+    "li li li li"
+    "li li li li";
+  height: 700px;
+  width: 700px;
+}
+
+li.item {
+  list-style: none;
+}
+
+.activeStep {
+  background-color: turquoise;
+}
+
+.activeSound {
+  outline: 1px solid red;
+}
